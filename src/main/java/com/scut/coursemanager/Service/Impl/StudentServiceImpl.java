@@ -6,8 +6,11 @@ import com.scut.coursemanager.Entity.StudentInfo;
 import com.scut.coursemanager.Exception.CreateException;
 import com.scut.coursemanager.Exception.DeleteException;
 import com.scut.coursemanager.Exception.ModifyException;
+import com.scut.coursemanager.Exception.QueryException;
 import com.scut.coursemanager.Mapper.StudentMapper;
 import com.scut.coursemanager.Service.StudentService;
+import com.scut.coursemanager.utility.JwtUtil;
+import org.springframework.dao.QueryTimeoutException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +25,15 @@ public class StudentServiceImpl implements StudentService {
     @Resource
     private HttpServletRequest httpServletRequest;
 
+    @Resource
+    private JwtUtil jwtUtil;
+
+    /**
+    * @Description:创建学生
+    * @Param: [studentInfo]
+    * @return: void
+    * @Date: 2020/11/10
+    */
     @Override
     @Transactional(rollbackFor = {CreateException.class})
     public void createStudent(StudentInfo studentInfo) throws CreateException {
@@ -40,7 +52,12 @@ public class StudentServiceImpl implements StudentService {
 
 
     }
-
+    /**
+    * @Description:删除学生
+    * @Param: [student_id]
+    * @return: void
+    * @Date: 2020/11/10
+    */
     @Override
     @Transactional(rollbackFor = {DeleteException.class})
     public void deleteStudent(int student_id) throws DeleteException {
@@ -49,17 +66,43 @@ public class StudentServiceImpl implements StudentService {
 
         }
     }
-
+    /**
+    * @Description:修改学生
+    * @Param: [studentInfo]
+    * @return: void
+    * @Date: 2020/11/10
+    */
     @Override
     @Transactional(rollbackFor = {ModifyException.class})
     public void modifyStudent(StudentInfo studentInfo) throws ModifyException{
+        String uid = jwtUtil.extractUidSubject(this.httpServletRequest);
+        if(uid!=studentInfo.getStudentId()){
+            throw new ModifyException("你没有权限进行此操作。");
+        }
 
+        //StudentInfo oldStudentInfo = studentMapper.selectById(uid);
+
+        StudentInfo newStudentInfo = StudentInfo.builder()
+                .studentId(uid)
+                .studentName(studentInfo.getStudentName())
+                .studentPhone(studentInfo.getStudentPhone())
+                .studentSex(studentInfo.getStudentSex())
+                .build();
+
+        if (studentMapper.updateById(newStudentInfo) != 1) {
+            throw new ModifyException("修改失败");
+        }
 
     }
 
     @Override
-    public StudentInfo getStudentInfo(int student_id) {
-        return null;
+    @Transactional(rollbackFor = {QueryException.class})
+    public StudentInfo getStudentInfo(String student_id) throws QueryException {
+        StudentInfo studentInfo=studentMapper.selectById(student_id);
+        if (studentInfo == null) {
+            throw new QueryException("无法查找到该学生信息");
+        }
+        return studentInfo;
     }
 
     @Override

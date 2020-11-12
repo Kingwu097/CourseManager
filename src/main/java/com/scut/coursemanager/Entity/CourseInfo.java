@@ -18,6 +18,10 @@ import lombok.NoArgsConstructor;
 public class CourseInfo {
     @TableId(value = "course_id",type = IdType.ASSIGN_UUID)
     private String courseId;
+    private String courseName;
+    private String courseTeacherName;
+    private String courseTime;
+    private String classroom;
 
 
 }

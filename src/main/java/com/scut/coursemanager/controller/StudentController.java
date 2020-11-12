@@ -5,6 +5,8 @@ package com.scut.coursemanager.controller;/*
 import com.scut.coursemanager.Entity.StudentInfo;
 import com.scut.coursemanager.Exception.CreateException;
 import com.scut.coursemanager.Exception.DeleteException;
+import com.scut.coursemanager.Exception.ModifyException;
+import com.scut.coursemanager.Exception.QueryException;
 import com.scut.coursemanager.Service.StudentService;
 import com.scut.coursemanager.dto.SuccessResponse;
 import io.swagger.annotations.Api;
@@ -42,7 +44,7 @@ public class StudentController {
         }
     }
     @ApiOperation("删除学生")
-    @RequestMapping(value = "/DeldteStudent",method = RequestMethod.POST)
+    @RequestMapping(value = "/DeleteStudent",method = RequestMethod.POST)
     public ResponseEntity<SuccessResponse> deleteStudent(@RequestParam("id") int studentId){
         try {
             studentService.deleteStudent(studentId);
@@ -54,6 +56,36 @@ public class StudentController {
             return ResponseEntity.ok(new SuccessResponse(false, "删除学生失败"));
         }
 
+    }
+
+    @ApiOperation("修改学生信息")
+    @RequestMapping(value = "/ModifyStudent",method = RequestMethod.POST)
+    public ResponseEntity<SuccessResponse> modifyStudent(@RequestBody StudentInfo studentInfo) {
+        try {
+            studentService.modifyStudent(studentInfo);
+            log.info("学生信息修改成功");
+            return ResponseEntity.ok(new SuccessResponse(true, "修改学生成功"));
+
+        } catch (ModifyException e) {
+            log.info("学生信息修改失败");
+            return ResponseEntity.ok(new SuccessResponse(false, e.getMessage()));
+
+        }
+
+    }
+
+    @ApiOperation("查看学生信息")
+    @RequestMapping(value = "/QueryStudent",method = RequestMethod.POST)
+    public ResponseEntity queryStudent(@RequestParam("id") String studentId){
+        try {
+
+           StudentInfo studentInfo=studentService.getStudentInfo(studentId);
+            log.info("成功查找学生信息");
+            return ResponseEntity.ok(studentInfo);
+        } catch (QueryException e) {
+           log.info("查找学生信息失败");
+           return ResponseEntity.ok(new SuccessResponse(false, e.getMessage()));
+        }
     }
 
 

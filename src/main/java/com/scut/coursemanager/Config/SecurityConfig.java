@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //配置请求地址的权限
                 .authorizeRequests()
                 .antMatchers("/swagger-ui.html"
-                ,"/user/**","/authentication","/v2/api-docs","/swagger-resources/**"
+                ,"/user/**","/authentication/**","/v2/api-docs","/swagger-resources/**"
                 ,"/webjars/**").permitAll()
                 // 任何请求，访问的用户都需要经过认证
                 .anyRequest().authenticated()
