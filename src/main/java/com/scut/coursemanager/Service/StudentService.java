@@ -15,7 +15,7 @@ public interface StudentService {
     /**
      * 删除学生
      */
-    void deleteStudent(int student_id) throws DeleteException;
+    void deleteStudent(String student_id) throws DeleteException;
 
     /**
      * 修改学生

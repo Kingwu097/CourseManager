@@ -45,7 +45,7 @@ public class StudentController {
     }
     @ApiOperation("删除学生")
     @RequestMapping(value = "/DeleteStudent",method = RequestMethod.POST)
-    public ResponseEntity<SuccessResponse> deleteStudent(@RequestParam("id") int studentId){
+    public ResponseEntity<SuccessResponse> deleteStudent(@RequestParam("id") String studentId){
         try {
             studentService.deleteStudent(studentId);
             log.info("学生删除成功");

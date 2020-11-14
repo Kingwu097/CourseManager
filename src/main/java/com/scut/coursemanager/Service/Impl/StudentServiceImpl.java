@@ -60,7 +60,7 @@ public class StudentServiceImpl implements StudentService {
     */
     @Override
     @Transactional(rollbackFor = {DeleteException.class})
-    public void deleteStudent(int student_id) throws DeleteException {
+    public void deleteStudent(String student_id) throws DeleteException {
         if(studentMapper.deleteById(student_id)!=1){
             throw new DeleteException("删除失败");
 
@@ -75,6 +75,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional(rollbackFor = {ModifyException.class})
     public void modifyStudent(StudentInfo studentInfo) throws ModifyException{
+        /**
+         * 只能修改自己id的信息
+         */
         String uid = jwtUtil.extractUidSubject(this.httpServletRequest);
         if(uid!=studentInfo.getStudentId()){
             throw new ModifyException("你没有权限进行此操作。");
