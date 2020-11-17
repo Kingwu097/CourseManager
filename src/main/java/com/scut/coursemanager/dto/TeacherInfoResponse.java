@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherInfoRequest {
+public class TeacherInfoResponse {
 //    @ApiModelProperty(value = "教师id",name = "teacherId",example = "1")
 //    private String teacherId;
     @ApiModelProperty(value = "教师名字",name = "teacherName",example = "王五")

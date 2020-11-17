@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserBasicMapper userBasicMapper;
 
     @Override
+    @Transactional(rollbackFor = {UsernameNotFoundException.class})
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         QueryWrapper<UserBasic> wrapper = new QueryWrapper<>();
         wrapper.eq("username", username);

@@ -11,18 +11,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@TableName(value = "course_info")
-public class CourseInfo {
-    @TableId(value = "course_id",type = IdType.ASSIGN_UUID)
+@TableName("takes")
+public class Takes {
+    @TableId(value = "record_id",type = IdType.ASSIGN_UUID)
+    private String recordId;
     private String courseId;
-    private String courseName;
-    private String teacherId;
-    private String courseTeacherName;
-    private String courseTimes;
-    private String classroom;
-
-
+    private String studentId;
 }

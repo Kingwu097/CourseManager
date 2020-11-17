@@ -1,21 +1,23 @@
 package com.scut.coursemanager.Service;
 
 import com.scut.coursemanager.Entity.StudentInfo;
-import com.scut.coursemanager.Exception.CreateException;
-import com.scut.coursemanager.Exception.DeleteException;
-import com.scut.coursemanager.Exception.ModifyException;
-import com.scut.coursemanager.Exception.QueryException;
+import com.scut.coursemanager.Exception.*;
+import com.scut.coursemanager.dto.DropRequest;
+import com.scut.coursemanager.dto.StudentInfoRequest;
+import com.scut.coursemanager.dto.TakesRequest;
+
+import java.util.List;
 
 public interface StudentService {
     /**
      *创建学生
      */
-    void createStudent(StudentInfo studentInfo) throws CreateException;
+    void createStudent(StudentInfoRequest studentInfoRequest) throws CreateException;
 
     /**
      * 删除学生
      */
-    void deleteStudent(String student_id) throws DeleteException;
+    void deleteStudent(String username) throws DeleteException;
 
     /**
      * 修改学生
@@ -25,10 +27,16 @@ public interface StudentService {
     /**
      * 查找学生
      */
-    StudentInfo getStudentInfo(String student_id) throws QueryException;
+    StudentInfo getStudentInfo(String username) throws QueryException;
+
 
     /**
-     * 学生查找成绩
+     * 学生选课
      */
-    double getStudentScore(int student_id,String courseName);
+    void CourseChosen(TakesRequest takesRequest) throws CourseChoseException;
+
+    /**
+     * 学生退课
+     */
+    void CourseDrop(DropRequest dropRequest) throws CourseDeleteException;
 }

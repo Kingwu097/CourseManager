@@ -10,19 +10,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+import java.sql.Time;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@TableName(value = "course_info")
-public class CourseInfo {
+@TableName("course_time")
+public class CourseTime {
     @TableId(value = "course_id",type = IdType.ASSIGN_UUID)
     private String courseId;
-    private String courseName;
-    private String teacherId;
-    private String courseTeacherName;
-    private String courseTimes;
-    private String classroom;
 
+    private Date date;
 
+    private String week;
+
+    private Time timeSlot;
 }

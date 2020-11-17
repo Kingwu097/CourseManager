@@ -3,7 +3,9 @@ package com.scut.coursemanager.controller;/*
  */
 
 import com.scut.coursemanager.Entity.StudentInfo;
+import com.scut.coursemanager.Entity.TeacherInfo;
 import com.scut.coursemanager.Mapper.StudentMapper;
+import com.scut.coursemanager.Mapper.TeacherMapper;
 import com.scut.coursemanager.Mapper.UserBasicMapper;
 import com.scut.coursemanager.utility.JwtUtil;
 import io.swagger.annotations.Api;
@@ -27,6 +29,8 @@ public class AuthenticationController {
     @Resource
     private StudentMapper studentMapper;
     @Resource
+    private TeacherMapper teacherMapper;
+    @Resource
     private JwtUtil jwtUtil;
     @Resource
     private AuthenticationManager authenticationManager;
@@ -49,12 +53,16 @@ public class AuthenticationController {
         String uid=userBasicMapper.getUserIdByName(username);
         //获取用户的id
         StudentInfo studentInfo=studentMapper.selectById(uid);
+        TeacherInfo teacherInfo = teacherMapper.selectById(uid);
         //根据id确认用户身份
         if(studentInfo!=null){
-            claims.put("Identity", "Student");
+            claims.put("identity", "Student");
+        }
+        else if(teacherInfo!=null){
+            claims.put("identity", "Teacher");
         }
         else {
-            claims.put("Identity","Null");
+            claims.put("identity","Null");
         }
 
 
